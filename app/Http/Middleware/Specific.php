@@ -22,15 +22,7 @@ class Specific
         if (empty($request->toArray())) {
 
             $id = Auth::id();
-
-            $check = User::select('name')->where('id', $id)->get();
-            $Q1 = json_decode($check);
-            $variable1 = $Q1[0];
-            $E1 = get_object_vars($variable1);
-            $check_result = $E1["name"];# Converted name
-
-
-            $result_check = Message::where('sender_name', $check_result)->orWhere('reciver_name', $check_result)->get();
+            $result_check = Message::where('sender_id', $id)->orWhere('reciver_id', $id)->get();
 
             if (empty($result_check->toArray())) {
                 return redirect()->back();

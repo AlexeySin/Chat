@@ -13,12 +13,13 @@ class CreateMessagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('messages', function (Blueprint $table) {
+        Schema::table('messages', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
-            $table->text('message');
-            $table->string('time');
-            $table->string('user_name');
+            $table->integer('sender_id')->change();
+            $table->integer('reciver_id')->change();
+            $table->string('token')->change();
+            $table->text('message')->change();
+            $table->timestamp('time')->change();
             $table->timestamps();
         });
     }

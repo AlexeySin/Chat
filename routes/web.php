@@ -24,12 +24,11 @@ Route::get('logout', [ 'uses' => 'Auth\AuthController@getLogout', 'as' => 'logou
 
 Route::get('/all',['uses' => 'UsersController@showAllUsers', 'as' => 'Allusers']);
 
-Route::get('/all_spec',['middleware' => 'Specific', 'uses' => 'UsersController@showSpecificUsers', 'as' => 'Specific_users']);
+Route::get('/all_spec',['middleware' => 'Specific', 'uses' => 'SpecificController@showSpecificUsers', 'as' => 'Specific_users']);
 
-Route::get('/curr',['uses' => 'UsersController@showCurrentUser', 'as' => 'currentuser']);
+Route::get('/curr',['uses' => 'CurrentController@showCurrentUser', 'as' => 'currentuser']);
 
 Route::get('/send_get',['uses' => 'UsersController@sendGet', 'as' => 'send_get']);
 
-Route::get('/send',['uses' => 'UsersController@sendMessage', 'as' => 'send']);
+Route::post('/send',['uses' => 'MessageController@sendMessage', 'as' => 'send']);
 
-Route::get('/TEST',['uses' => 'UsersController@TEST']);

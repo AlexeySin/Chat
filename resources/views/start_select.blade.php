@@ -66,10 +66,10 @@
                                     <select multiple class="form-control" id="exampleFormControlSelect2" style="width: 1100px !important; height: 300px !important; padding-bottom:200px !important;">
                                         @foreach($last as $key)
                                             <option class="alert alert-light" role="alert">
-                                        @if($key["sender_name"]==$check_name)
+                                        @if($key["sender_id"]==$check_id)
                                                <option class="alert alert-info" role="alert"> <p>Отправитель - Вы</p></option>
                                             @else
-                                                <option class="alert alert-info" role="alert"> <p>Отправитель - {{$key["sender_name"]}}</p></option>
+                                                <option class="alert alert-info" role="alert"> <p>Отправитель - {{$current_user}}</p></option>
                                             @endif
                                                <option class="alert alert-info" role="alert"> <p>Сообщение - {{$key["message"]}}</p></option>
                                 <option class="alert alert-info" role="alert"> <p>Время отправки сообщения - {{$key["time"]}}</p></option>
@@ -81,13 +81,12 @@
                     <br>
                     <div>
 
-                        <form method="get" action="{{URL::to('/send')}}">
+                        <form method="POST" action="{{URL::to('/send')}}">
+                            @csrf
                             <div class="form-group">
                                 <textarea required name="user_message" class="form-control" id="exampleFormControlTextarea1" placeholder="Ваше сообщение..." rows="3" style="background-color: rgba(0,0,0,0.3); border-radius:10px;"></textarea>
                             </div>
                             <input name="senders_id" type="hidden" value="{{$id}}">
-                            <input name="senders_name" type="hidden" value="{{$name}}">
-                            <input name="time_of_send" type="hidden" value="{{$time}}">
                             <input name="recipient" type="hidden" value="{{$current_user}}">
                             @if($current_user!=null)
                                 <button type="submit" class="btn btn-primary">Отправить</button>
