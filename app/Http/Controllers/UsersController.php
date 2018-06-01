@@ -7,22 +7,22 @@ use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Conversation;
 
 class UsersController extends Controller
 {
 
     public function showAllUsers()
     {
-        $id = Auth::id();
+        $id    = Auth::id();
         $users = User::where('id', '!=', $id)->get();
 
         return view('start', [
-            'id' => $id,
-            'users' => $users,
-            'current_user' => null,
+            'users'        => $users,
             'string_check' => 0,
-            'check_type' => '',
-            'senders_name'=>0
+            'dis_butt'     => 'first',
+            'spec_var'     => 1,
+            'new'          => 'newConf'
         ]);
     }
 

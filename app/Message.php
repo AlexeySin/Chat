@@ -7,10 +7,21 @@ use Carbon\Carbon;
 
 class Message extends Model
 {
+
     protected $table = 'messages';
 
-    public function createFromFormat($time_param)
+    public function conversations()
     {
-        $this->$time = Carbon::createFromFormat('Y-m-d', $time_param);
+        return $this->belongsToMany('App\Conversation');
+    }
+
+    public function messages()
+    {
+        return $this->belongsToMany('App\User');
+    }
+
+    public function names()
+    {
+        return $this->belongsToMany('App\User');
     }
 }

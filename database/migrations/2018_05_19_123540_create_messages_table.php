@@ -6,6 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateMessagesTable extends Migration
 {
+
     /**
      * Run the migrations.
      *
@@ -15,11 +16,9 @@ class CreateMessagesTable extends Migration
     {
         Schema::table('messages', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('sender_id')->change();
-            $table->integer('reciver_id')->change();
-            $table->string('token')->change();
-            $table->text('message')->change();
-            $table->timestamp('time')->change();
+            $table->integer('user_id');
+            $table->integer('conversation_id');
+            $table->text('message');
             $table->timestamps();
         });
     }

@@ -13,17 +13,12 @@ class StartController extends Controller
 
     public function show()
     {
-        $id = Auth::id();
-        $users = User::where('id','!=',$id)->get();
-
-        date_default_timezone_set('Europe/Kiev');
-        $time = Carbon::now();
-
         return view('start', [
-            'users' => $users,
+            'check_type'   => '',
+            'dis_butt'     => 1,
             'string_check' => 0,
-            'time' => $time,
-            'check_type' => ''
+            'users'        => [0],
+            'new'          => 'newConf'
         ]);
     }
 }

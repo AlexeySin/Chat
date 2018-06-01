@@ -7,9 +7,12 @@ use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\conversation_message;
+use App\message_user;
 
 class MessageController extends Controller
 {
+
     /**
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -17,42 +20,36 @@ class MessageController extends Controller
     public function sendMessage(Request $request)
     {
 
-        $id = Auth::id();
-        $result_request = $request->toArray();
+        $req             = $request->toArray();
+        $id              = Auth::id(); #код отправителя
+        $sended_message  = $req["user_message"]; #отправленное сообщение
+        $conversation_id = $req["cnv"]; #код конфы
 
-$token = $result_request["_token"]; #message token
-$message = $result_request["user_message"]; #message
-$senders_id = intval($result_request["senders_id"]); #id of current user, that send the message
-$recipient = $result_request["recipient"]; #name of the receiver
-$send_time = Carbon::now(); # Sending date & time
+#Сначала запишем сообщение
+        $message                  = new Message;
+        $message->user_id         = $id;
+        $message->conversation_id = $conversation_id;
+        $message->message         = $sended_message;
+        $message->save();
 
-        $senders_name_var1 = User::select('name')->where('id',$senders_id)->get();
-        $senders_name_var2 = $senders_name_var1[0]->toArray();
-        $senders_name = $senders_name_var2["name"];
+#Потом возбмем id этого сообщения, в этой конфе, этого пользователя
+        $message_id_var = Message::select('id')->where([
+            ['message', $sended_message],
+            ['conversation_id', $conversation_id],
+            ['user_id', $id]
+        ])->get();
+        $message_id     = intval(($message_id_var[0]->toArray())['id']);
 
-        $reciver_id_var1 = User::select('id')->where('name', $recipient)->get(); # Receiver id
-        $reciver_id_var2 = $reciver_id_var1[0]->toArray();
-        $reciver_id = $reciver_id_var2["id"]; # converted Receiver id
-
-
-        #Data for the messages window
-        $last = Message::where([
-            ['reciver_id', $reciver_id],
-            ['sender_id', $senders_id]
-        ])->orderBy('id', 'asc')->get();
-
-
-        #Save data to DB
-        $mess = new Message;
-
-        $mess->sender_id = $senders_id;
-        $mess->reciver_id = $reciver_id;
-        $mess->token = $token;
-        $mess->message = $message;
-        $mess->time = $send_time;
-
-        $mess->save();
-
+#И напоследок, сделаем записи в связные таблицы
+        $relation_first                  = new conversation_message;
+        $relation_first->message_id      = $message_id;
+        $relation_first->conversation_id = $conversation_id;
+        $relation_first->save();
+        #
+        $relation_second             = new message_user;
+        $relation_second->user_id    = $id;
+        $relation_second->message_id = $message_id;
+        $relation_second->save();
 
         return redirect()->route('send_get');
     }

@@ -67,10 +67,64 @@
                                     @guest
                                     @else
                                         <td>
+                                            <!-- Button trigger modal -->
+                                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                    data-target="#exampleModalLong">
+                                                Написать
+                                            </button>
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"
+                                                 aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLongTitle">Modal
+                                                                title</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+
+
+                                                            <form method="GET" action="{{URL::to('/newconf')}}"
+                                                                  onchange="handleSelect()">
+                                                                <div class="form-group"
+                                                                     style="width: 200px !important;">
+                                                                    <select multiple class="form-control"
+                                                                            name="selected_user"
+                                                                            id="exampleFormControlSelect2"
+                                                                            style="height: 400px !important;">
+                                                                        @if($new=='newConf')
+                                                                            @foreach($users as $key)
+                                                                                <option>{{$key['name']}}</option>
+                                                                            @endforeach
+                                                                        @endif
+                                                                    </select>
+                                                                </div>
+                                                                <input type="text" placeholder="name on conversation"
+                                                                       required name="conv_name">
+                                                                <input type="submit" class="btn btn-primary"
+                                                                       value="Написать">
+                                                            </form>
+                                                            <br><br><br>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <br><br>
                                             <a type="button" class="btn btn-primary"
-                                               href="{{ route('Allusers') }}">Все</a>
-                                            <a type="button" class="btn btn-primary" style="color:white;"
-                                               href="{{ route('Specific_users') }}">Знакомые</a>
+                                               href="{{ route('Allusers') }}">Юзеры</a>
+                                            @if($dis_butt==1)
+                                            @else
+                                                <a type="button" class="btn btn-primary" style="color:white;"
+                                                   href="{{ route('Specific_users') }}">Переписки</a>
+                                            @endif
                                         </td>
                                     @endguest
                                 </tr>
@@ -84,19 +138,27 @@
                                             @foreach($friend_array as $key)
                                                 <option>{{$key}}</option>
                                             @endforeach
-                                        @else
+                                        @elseif(($dis_butt!=1) and ($dis_butt!=null) and ($spec_var==1))
                                             @foreach($users as $key)
                                                 <option>{{$key->name}}</option>
                                             @endforeach
+                                        @elseif(($dis_butt==null) and ($string_check==null))
+                                            @foreach($users as $key)
+                                                <option>{{$key['id']}}</option>
+                                                <br>
+                                            @endforeach
+                                        @elseif($dis_butt=='first')
+                                            @foreach($users as $key)
+                                                <option>{{$key['name']}}</option>
+                                            @endforeach
                                         @endif
-
                                     </select>
                                 </div>
                                 <br>
                                 @guest
                                 @else
-                                    <button id="checked" type="submit" class="btn btn-success" disabled>Переписка
-                                    </button>
+                                    {{--<button id="checked" type="submit" class="btn btn-success" disabled>Переписка
+                                    </button>--}}
                                 @endguest
                             </form>
                         </div>
