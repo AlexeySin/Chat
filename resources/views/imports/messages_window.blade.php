@@ -10,7 +10,7 @@
                         <option class="alert alert-info" role="alert"><p>Отправитель - {{$key['name']}}</p></option>
                     @endif
                     <option class="alert alert-info" role="alert"><p>Сообщение - {{$key1['message']}}</p></option>
-                    <option class="alert alert-info" role="alert"><p>Время отправки - {{$key1['updated_at']}}</p>
+                    <option class="alert alert-info" role="alert"><p>Время отправки - {{$key1['updated_at']->toFormattedDateString()}}</p>
                     </option>
                 @endif
                 <option class="alert alert-white" role="alert"></option>
